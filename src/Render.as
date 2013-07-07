@@ -19,6 +19,9 @@ package
 
         public function set imgUri(imgUri:String):void
         {
+            if (imgUri == _imgUri)
+                return;
+
             _imgUri = imgUri;
             var loader:Loader = new Loader();
             loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoaded);
