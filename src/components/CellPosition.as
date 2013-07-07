@@ -1,4 +1,4 @@
-package
+package components
 {
     public class CellPosition implements Component
     {

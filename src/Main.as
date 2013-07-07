@@ -3,9 +3,9 @@ package
     import flash.display.Sprite;
     import flash.text.TextField;
     import EntityManager;
-    import RenderSystem;
-    import Position;
-    import Render;
+    import systems.RenderSystem;
+    import components.PixelPosition;
+    import components.Render;
     import flash.display.*;
 
     [Frame(factoryClass = 'Preloader')]
@@ -22,14 +22,14 @@ package
             trace(entityManager.createEntity());
             var targetEntity2:int = entityManager.createEntity();
             trace(targetEntity2 + " <- target entity 2");
-            var position:Position = new Position();
+            var position:PixelPosition = new PixelPosition();
             position.x = 10;
             position.y = 5;
             entityManager.addComponent(targetEntity, position);
             trace("added position to entity " + targetEntity + ", making more entities");
             trace(entityManager.createEntity());
             trace(entityManager.createEntity());
-            var position2:Position = new Position();
+            var position2:PixelPosition = new PixelPosition();
             position2.x = 15;
             position2.y = 45;
             entityManager.addComponent(targetEntity2, position2);
@@ -37,16 +37,16 @@ package
             trace(entityManager.createEntity());
             trace(entityManager.createEntity());
             trace("getting all entities with position...");
-            var entities:Vector.<int> = entityManager.getAllEntitiesPossessingComponent(Position);
+            var entities:Vector.<int> = entityManager.getAllEntitiesPossessingComponent(PixelPosition);
             for each (var entity:int in entities)
             {
-                var positionOut:Position = Position(entityManager.getComponent(entity, Position));
+                var positionOut:PixelPosition = PixelPosition(entityManager.getComponent(entity, PixelPosition));
                 trace("entity " + entity + " has position (" + positionOut.x + ", " + positionOut.y + ")");
             }
             var renderSystem:RenderSystem = new RenderSystem(entityManager, this);
             renderSystem.update();
             var addedEntity:int = entityManager.createEntity();
-            var position3:Position = new Position();
+            var position3:PixelPosition = new PixelPosition();
             position3.x = 100;
             position3.y = 200;
             entityManager.addComponent(addedEntity, position3);
@@ -54,7 +54,7 @@ package
             entityManager.addComponent(addedEntity, render);
             renderSystem.update();
             var necessaryComponents:Vector.<Class> = new Vector.<Class>();
-            necessaryComponents.push(Position);
+            necessaryComponents.push(PixelPosition);
             necessaryComponents.push(Render);
             var entitiesWithComponents:Vector.<int> = entityManager.getAllEntitiesPossessingComponents(necessaryComponents);
             trace("HI!");

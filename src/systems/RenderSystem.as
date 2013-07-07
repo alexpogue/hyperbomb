@@ -1,7 +1,8 @@
-package
+package systems
 {
     import EntityManager;
-    import Position;
+    import components.PixelPosition;
+    import components.Component;
     import flash.display.DisplayObjectContainer;
 
     public class RenderSystem
@@ -17,8 +18,8 @@ package
 
         public function update():void
         {
-            var positions:Vector.<Component> = entityManager.getAllComponentsOfType(Position);
-            for each(var position:Position in positions)
+            var positions:Vector.<Component> = entityManager.getAllComponentsOfType(PixelPosition);
+            for each(var position:PixelPosition in positions)
                 trace("updating position!");
         }
     }

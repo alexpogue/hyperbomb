@@ -1,6 +1,7 @@
 package
 {
     import flash.utils.Dictionary;
+    import components.Component;
 
     public class EntityManager
     {

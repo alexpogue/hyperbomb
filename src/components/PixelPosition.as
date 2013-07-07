@@ -1,4 +1,4 @@
-package
+package components
 {
     public class PixelPosition implements Component
     {
