@@ -3,47 +3,47 @@ Hyperbomb
 
 Hyperbomb is a highly customizable and multiplayer Bomberman remake.
 
-Plan:
+Plan
+----
 
-Components
-----------
+###Components###
 
 BombDropper:
-+int bombAmount
-+int bombSpread
++ int bombAmount
++ int bombSpread
 
 Movable:
-+int speed
-+int direction
++ int speed
++ int direction
 
 FlameSpreader:
-+int range
++ int range
 
 UpgradeCollector
 
 Score:
-+int score
++ int score
 
 CellPosition:
-+int x
-+int y
++ int x
++ int y
 
 PixelPosition:
-+int x
-+int y
++ int x
++ int y
 
 Damageable:
-+int health;
++ int health;
 
 KeyControl:
-+int upKey
-+int downKey
-+int leftKey
-+int rightKey
++ int upKey
++ int downKey
++ int leftKey
++ int rightKey
 
 TimedEffect:
-+float timeRemaining
-+enum EffectType(TIMED_VANISH, TIMED_DAMAGE);
++ float timeRemaining
++ enum EffectType(TIMED_VANISH, TIMED_DAMAGE);
 
 AIControl:
-+enum NextMove(AI_WAIT, AI_MOVE_UP,AI_MOVE_DOWN, AI_MOVE_LEFT, AI_MOVE_RIGHT, AI_DROP_BOMB)
++ enum NextMove(AI_WAIT, AI_MOVE_UP,AI_MOVE_DOWN, AI_MOVE_LEFT, AI_MOVE_RIGHT, AI_DROP_BOMB)
