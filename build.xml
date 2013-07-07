@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<project name="OSMFSimple" default="main" basedir=".">
+	<property environment="env"/>
+	<property file="build.properties" />
+	
+	<!-- do not change next 2 lines, it adds flex tasks to ant -->
+	<property name="FLEXTASKS" value="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+	<taskdef resource="flexTasks.tasks" classpath="${FLEXTASKS}"/>
+
+    <!-- deploy properties -->
+    <property name="zip-deploy-folder" value="deploy"/>
+
+    <!-- clean -->
+	<target name="clean">
+        <echo message="cleaning..." />    
+		<sequential>
+			<delete includeemptydirs="true" quiet="true">
+				<fileset dir="." includes="**/bin/**/*" />
+			</delete>	
+			<delete includeemptydirs="true" quiet="true">
+				<fileset dir="." includes="**/bin" />
+			</delete>
+		</sequential>		
+	</target>
+	
+    <!-- clean deploy -->
+    <target name="clean-deploy">
+        <echo message="cleaning deploy folder..." />    
+		<sequential>
+			<delete includeemptydirs="true" quiet="true">
+				<fileset dir="." includes="**/${zip-deploy-folder}/**/*" />
+			</delete>	
+			<delete includeemptydirs="true" quiet="true">
+				<fileset dir="." includes="**/${zip-deploy-folder}" />
+			</delete>
+		</sequential>		
+    </target>	
+
+    <!-- clean asdocs -->
+	<target name="clean-asdocs">
+        <echo message="cleaning asdocs..." />    
+		<sequential>
+			<delete includeemptydirs="true" quiet="true">
+				<fileset dir="." includes="**/docs/**/*" />
+			</delete>	
+			<delete includeemptydirs="true" quiet="true">
+				<fileset dir="." includes="**/docs" />
+			</delete>
+		</sequential>		
+	</target>
+
+	
+	<!-- create the html and js files -->
+    <target name="wrapper"> 
+        <html-wrapper 
+            title="${ant.project.name}"
+            file="${ant.project.name}.html" 
+            height="360" 
+            width="640" 
+            application="${ant.project.name}" 
+            bgcolor="#000000"
+            swf="${ant.project.name}" 
+            history="false" 
+            express-install="true" 
+            version-detection="true" 
+            output="./bin"/> 
+    </target>     
+
+	<!-- Release build for latest OSMF release and Flash Player 10.1 -->
+	<target name="release-build" >
+	    <echo message="building release..." />
+		<mxmlc
+			file="./src/Main.as" 
+			output="bin/hyperbomb.swf"
+		 	debug="false" 
+		 	incremental="false"
+		 	strict="true"
+		 	accessible="false"
+	        link-report="link_report.xml"
+	        static-link-runtime-shared-libraries="true">
+	
+            <optimize>true</optimize>
+            <target-player>11.1</target-player>        
+            <source-path path-element="./src" />
+        
+            <library-path dir="./libs" append="true">
+                <include name="*.swc"/>
+            </library-path>
+        </mxmlc>
+	</target>
+
+  <!-- Debug build -->
+	<target name="debug-build" >
+	    <echo message="building debug..." />
+		<mxmlc
+			file="./src/Main.as" 
+			output="bin/hyperbomb.swf"
+		 	debug="true" 
+		 	incremental="false"
+		 	strict="true"
+		 	accessible="false"
+	        link-report="link_report.xml"
+	        static-link-runtime-shared-libraries="true">
+	
+            <optimize>true</optimize>
+            <target-player>11.1</target-player>        
+            <source-path path-element="./src" />
+        
+            <library-path dir="./libs" append="true">
+                <include name="*.swc"/>
+            </library-path>
+        </mxmlc>
+	</target>
+	
+    <!-- build asdocs -->
+    <target name="build-asdocs">
+        <echo message="building asdocs..."/>
+        <asdoc output="${basedir}/docs">
+            <doc-sources path-element="${basedir}/src"/>
+            <target-player>11.1</target-player>
+            <library-path dir="libs" append="true">
+                <include name="*.swc"/>
+            </library-path>
+        </asdoc>
+    </target>
+	
+    <!-- create zip files -->
+    <target name="zip-deploy">
+        <zip destfile="${zip-deploy-folder}/${ant.project.name}-release.zip"
+            basedir="${basedir}"
+            includes="bin/*.* docs/**"
+            excludes="*.DS_Store  /*.svn/*"/>
+    </target>	
+
+    <!-- for release, replace "debug-build" with "release-build" -->
+    <target name="main" depends="clean, clean-deploy, clean-asdocs, debug-build, wrapper, build-asdocs, zip-deploy"/>
+
+</project>
