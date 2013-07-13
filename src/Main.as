@@ -6,6 +6,7 @@ package
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.text.TextField;
+    import LevelInfo;
     import systems.RenderSystem;
 
     [Frame(factoryClass = 'Preloader')]
@@ -13,6 +14,11 @@ package
     {
         public function Main()
         {
+            LevelInfo.numCellsTall = 10;
+            LevelInfo.numCellsWide = 10;
+            LevelInfo.cellWidth = 64;
+            LevelInfo.cellHeight = 64;
+
             var entityManager:EntityManager = new EntityManager();
             var renderSystem:RenderSystem = new RenderSystem(entityManager, this);
 
