@@ -9,6 +9,7 @@ package systems
     import flash.display.DisplayObjectContainer;
     import flash.display.Shape;
     import flash.events.Event;
+    import flash.geom.Point;
 
     public class RenderSystem
     {
@@ -25,7 +26,7 @@ package systems
             container.addChild(canvas);
         }
 
-        public function update(event:Event):void
+        public function update(deltaMs:int):void
         {
             var requiredComponents:Vector.<Class> = Vector.<Class>([PixelPosition, Render]);
             var renderableEntities:Vector.<int> = entityManager.getAllEntitiesPossessingComponents(requiredComponents);
@@ -53,7 +54,7 @@ package systems
                 return;
 
             canvas.bitmapData.lock();
-            canvas.bitmapData.copyPixels(imgData, imgData.rect, imgData.rect.topLeft);
+            canvas.bitmapData.copyPixels(imgData, imgData.rect, new Point(x, y));
             canvas.bitmapData.unlock();
         }
     }
