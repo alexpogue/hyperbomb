@@ -20,8 +20,8 @@ package systems
         {
             container = c;
             entityManager = em;
-            canvas = new Bitmap();
-            canvas.bitmapData = new BitmapData(LevelInfo.numPixelsWide, LevelInfo.numPixelsTall, false);
+            canvas = new Bitmap(new BitmapData(LevelInfo.numPixelsWide, LevelInfo.numPixelsTall, false));
+
             container.addChild(canvas);
         }
 
@@ -49,8 +49,9 @@ package systems
 
         private function blitImage(x:int, y:int, imgData:BitmapData):void
         {
-            if(!imgData)
+            if (!imgData)
                 return;
+
             canvas.bitmapData.lock();
             canvas.bitmapData.copyPixels(imgData, imgData.rect, imgData.rect.topLeft);
             canvas.bitmapData.unlock();
