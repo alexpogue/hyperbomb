@@ -1,14 +1,19 @@
 package systems
 {
-    import EntityManager;
     import components.PixelPosition;
-    import components.Component;
+    import components.Render;
+    import EntityManager;
+    import flash.display.Bitmap;
+    import flash.display.BitmapData;
     import flash.display.DisplayObjectContainer;
+    import flash.display.Shape;
+    import flash.events.Event;
 
     public class RenderSystem
     {
         private var container:DisplayObjectContainer;
         private var entityManager:EntityManager;
+        private var canvas:Bitmap
 
         public function RenderSystem(em:EntityManager, c:DisplayObjectContainer)
         {
@@ -16,11 +21,31 @@ package systems
             entityManager = em;
         }
 
-        public function update():void
+        public function update(event:Event):void
         {
-            var positions:Vector.<Component> = entityManager.getAllComponentsOfType(PixelPosition);
-            for each(var position:PixelPosition in positions)
-                trace("updating position!");
+            var requiredComponents:Vector.<Class> = Vector.<Class>([PixelPosition, Render]);
+            var renderableEntities:Vector.<int> = entityManager.getAllEntitiesPossessingComponents(requiredComponents);
+
+            renderEntities(renderableEntities);
+        }
+
+        private function renderEntities(entities:Vector.<int>):void
+        {
+            for each (var entity:int in entities)
+                renderEntity(entity);
+        }
+
+        private function renderEntity(entity:int):void
+        {
+            var position:PixelPosition = PixelPosition(entityManager.getComponent(entity, PixelPosition));
+            var render:Render = Render(entityManager.getComponent(entity, Render));
+
+            blitImage(position.x, position.y, render.imgData);
+        }
+
+        private function blitImage(x:int, y:int, imgData:BitmapData):void
+        {
+            container.addChild(new Bitmap(imgData));
         }
     }
 }

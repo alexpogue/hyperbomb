@@ -19,7 +19,18 @@ package components
                 return;
 
             _imgUri = imgUri;
-            _imgData = ImageManager.getImage(imgUri);
+            ImageManager.loadImage(imgUri, onImgLoaded);
+        }
+
+        public function onImgLoaded(imgUri:String):void
+        {
+            _imgData = ImageManager.getImage(imgUri, onImgLoaded);
+        }
+
+        public function setColorBlock(width:int, height:int, fillColor:uint):void
+        {
+            _imgUri = "";
+            _imgData = new BitmapData(width, height, false, fillColor);
         }
 
         public function get imgData():BitmapData

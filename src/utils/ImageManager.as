@@ -12,24 +12,41 @@ package utils
     {
         private static var images:Dictionary;
 
-        public static function getImage(uri:String):BitmapData
+        public static function isImageLoaded(uri:String):Boolean
         {
-            if (images[uri])
-                return images[uri];
-
-            var functionOnLoaded:Function = onLoaded(uri);
-            var loader:Loader = new Loader();
-            loader.contentLoaderInfo.addEventListener(Event.COMPLETE, functionOnLoaded);
-            loader.load(new URLRequest(uri));
-
-            return images[uri];
+            return (images[uri]) ? (true) : (false);
         }
 
-        private static function onLoaded(imageUri:String):Function
+        public static function getImage(uri:String, callback:Function):BitmapData
+        {
+            return (images && images[uri]) ? (images[uri]) : (null);
+        }
+
+        public static function loadImage(uri:String, callback:Function):void
+        {
+            if (!images)
+                images = new Dictionary();
+
+            if (images[uri])
+            {
+                callback(uri);
+                return;
+            }
+
+            var loader:Loader = new Loader();
+
+            var onLoadedFunction:Function = onLoaded(uri, callback);
+            loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadedFunction);
+            loader.load(new URLRequest(uri));
+        }
+
+        private static function onLoaded(imageUri:String, callback:Function):Function
         {
             return function(event:Event):void
             {
                 images[imageUri] = Bitmap(LoaderInfo(event.target).content).bitmapData;
+                event.currentTarget.removeEventListener(event.type, arguments.callee);
+                callback(imageUri);
             }
         }
     }

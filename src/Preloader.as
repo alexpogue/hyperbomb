@@ -9,14 +9,13 @@ package
     {
         public function Preloader()
         {
-            trace("Preloading!");
             this.loaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgress);
         }
 
         private function onProgress(e:ProgressEvent):void
         {
             var percent:Number = Math.round(e.bytesLoaded / e.bytesTotal * 100);
-            if(percent == 100)
+            if (percent == 100)
             {
                 this.loaderInfo.removeEventListener(ProgressEvent.PROGRESS, onProgress);
                 onLoaded();
