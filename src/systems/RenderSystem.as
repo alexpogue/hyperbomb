@@ -1,6 +1,7 @@
 package systems
 {
     import components.PixelPosition;
+    import LevelInfo;
     import components.Render;
     import EntityManager;
     import flash.display.Bitmap;
@@ -19,6 +20,9 @@ package systems
         {
             container = c;
             entityManager = em;
+            canvas = new Bitmap();
+            canvas.bitmapData = new BitmapData(LevelInfo.numPixelsWide, LevelInfo.numPixelsTall, false);
+            container.addChild(canvas);
         }
 
         public function update(event:Event):void
@@ -45,7 +49,11 @@ package systems
 
         private function blitImage(x:int, y:int, imgData:BitmapData):void
         {
-            container.addChild(new Bitmap(imgData));
+            if(!imgData)
+                return;
+            canvas.bitmapData.lock();
+            canvas.bitmapData.copyPixels(imgData, imgData.rect, imgData.rect.topLeft);
+            canvas.bitmapData.unlock();
         }
     }
 }
