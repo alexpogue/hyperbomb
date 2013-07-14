@@ -1,5 +1,6 @@
 package
 {
+    import components.KeyControl;
     import components.PixelPosition;
     import components.Render;
     import components.Velocity;
@@ -9,8 +10,9 @@ package
     import flash.text.TextField;
     import flash.utils.getTimer;
     import LevelInfo;
-    import systems.RenderSystem;
+    import systems.InputSystem;
     import systems.MoveSystem;
+    import systems.RenderSystem;
 
     [Frame(factoryClass = 'Preloader')]
     public class Main extends Sprite
@@ -18,9 +20,19 @@ package
         private var pastTime:int;
         private var renderSystem:RenderSystem;
         private var moveSystem:MoveSystem;
+        private var inputSystem:InputSystem;
 
         public function Main()
         {
+            if (!this.stage)
+                this.addEventListener(Event.ADDED_TO_STAGE, init);
+            else
+                init();
+        }
+
+        private function init(event:Event = null):void
+        {
+            this.removeEventListener(Event.ADDED_TO_STAGE, init);
             LevelInfo.numCellsTall = 10;
             LevelInfo.numCellsWide = 10;
             LevelInfo.cellWidth = 64;
@@ -29,6 +41,7 @@ package
             var entityManager:EntityManager = new EntityManager();
             renderSystem = new RenderSystem(entityManager, this);
             moveSystem = new MoveSystem(entityManager);
+            inputSystem = new InputSystem(entityManager, this.stage);
 
             var entity:int = entityManager.createEntity();
             var position:PixelPosition = new PixelPosition();
@@ -45,6 +58,9 @@ package
             entityManager.addComponent(entity, render);
             render.imgUri = "../assets/Pixel-mario-small.gif";
 
+            var controls:KeyControl = new KeyControl();
+            entityManager.addComponent(entity, controls);
+
             var pastTime:int = getTimer();
             addEventListener(Event.ENTER_FRAME, onEnterFrame);
         }
@@ -56,6 +72,7 @@ package
             pastTime = presentTime;
             renderSystem.update(deltaTime);
             moveSystem.update(deltaTime);
+            inputSystem.update(deltaTime);
         }
     }
 }
