@@ -33,6 +33,7 @@ package systems
             var velocity:Velocity = Velocity(entityManager.getComponent(entity, Velocity));
 
             position.x += velocity.x * deltaMs * 0.001;
+            position.y += velocity.y * deltaMs * 0.001;
         }
     }
 }
