@@ -40,26 +40,26 @@ package
             for each (var componentType:Class in componentTypes)
                 entityLists.push(getAllEntitiesPossessingComponent(componentType));
 
-            var entityCounts:Dictionary = new Dictionary();
+            var numComponentsInEntities:Dictionary = new Dictionary();
 
             // count the componentTypes that each entity contains
             for each (var entityList:Vector.<int> in entityLists)
             {
                 for each (var entityFromList:int in entityList)
                 {
-                    if (!entityCounts[entityFromList])
-                        entityCounts[entityFromList] = 0;
+                    if (!numComponentsInEntities[entityFromList])
+                        numComponentsInEntities[entityFromList] = 0;
 
-                    ++entityCounts[entityFromList];
+                    ++numComponentsInEntities[entityFromList];
                 }
             }
 
             var ret:Vector.<int> = new Vector.<int>();
 
             // if entity contains all componentTypes, add to ret
-            for (var entity:* in entityCounts)
+            for (var entity:* in numComponentsInEntities)
             {
-                if (entityCounts[entity] == componentTypes.length)
+                if (numComponentsInEntities[entity] == componentTypes.length)
                     ret.push(int(entity));
             }
 
@@ -68,17 +68,12 @@ package
 
         public function getAllEntitiesPossessingComponent(componentType:Class):Vector.<int>
         {
-            var retArray:Array = getEntitiesOrComponentsWithType(componentType, false);
-            var retVector:Vector.<int> = new Vector.<int>();
-            for each (var entity:int in retArray)
-                retVector.push(entity);
-            return retVector;
+            return Vector.<int>(getEntitiesOrComponentsWithType(componentType, false));
         }
 
         public function getAllComponentsOfType(componentType:Class):Vector.<Component>
         {
-            var retArray:Array = getEntitiesOrComponentsWithType(componentType, true);
-            return Vector.<Component>(retArray);
+            return Vector.<Component>(getEntitiesOrComponentsWithType(componentType, true));
         }
 
         private function getEntitiesOrComponentsWithType(componentType:Class, getComponents:Boolean):Array
